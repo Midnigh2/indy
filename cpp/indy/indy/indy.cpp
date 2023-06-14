@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 	{
 		cout << "Robot is Ready" << endl;
 
+		//현재 로봇의 6축 각도 읽기
 		double i[6];
 		cout << "Current joint values" << endl;
 		connector.getJointPosition(i);
@@ -45,10 +46,10 @@ int main(int argc, char **argv)
 		cout << "smartDO_8 HIGH" << endl;
 		connector.setSmartDigitalOutput(8, 1);
 
+		//SmartDI 값 읽어오기 (bool값)
 		char ret[32];
 		cout << "smartDI info" << endl;
 		connector.getSmartDigitalInputs(ret); // >>>> 여기서 이미 메모리주소에는 값이 다 들어와있음
-		
 		for (int a = 0; a < 32; a++) {
 
 			cout << static_cast<int>(ret[a]) << ",";
