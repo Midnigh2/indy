@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "IndyDCPConnector.h"
+#include "C:\My Documents\indycode\cpp\indy\indy\IndyDCPConnector.h"
 
 using namespace std; // cin, cout 사용
 using namespace NRMKIndy::Service::DCP;
@@ -29,20 +29,14 @@ void WaitFinish_L(IndyDCPConnector& connector_L) {
 void DigitalIO_L(IndyDCPConnector& connector_L) {
 	cout << "smartDO_L_8 LOW" << endl;
 	connector_L.setSmartDigitalOutput(8, 0);
-
-	cout << "smartDO_L_8 HIGH" << endl;
-	connector_L.setSmartDigitalOutput(8, 1);
 }
 
 void DigitalIO_R(IndyDCPConnector& connector_R) {
 	cout << "smartDO_R_8 LOW" << endl;
 	connector_R.setSmartDigitalOutput(8, 0);
-
-	cout << "smartDO_R_8 HIGH" << endl;
-	connector_R.setSmartDigitalOutput(8, 1);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	initWinSock();
 
@@ -50,20 +44,34 @@ int main(int argc, char **argv)
 	connector_R.connect();
 	connector_L.connect();
 
-	bool ready_R;
-	bool ready_L;
+	bool ready_R, ready_L;
+
 	connector_R.isRobotReady(ready_R); // 로봇이 작동가능한 상태인지 확인
 	connector_L.isRobotReady(ready_L);
 
+
+
 	if (ready_R && ready_L)
 	{
-		cout << "Robot is Ready" << endl;
+		cout << "Robot position is Home" << endl;
+		connector_R.moveJointHome();
+		connector_L.moveJointHome();
 
+		cout << "Robot is Ready" << endl;
 		DigitalIO_L(connector_L);
+		DigitalIO_R(connector_R);
+		cout << "indy7_R program is start" << endl;
+		connector_R.startCurrProgram();
+		Sleep(500);
+		cout << "indy7_L program is start" << endl;
+		connector_L.startCurrProgram();
 		
+
 		cout << "Disconnecting" << endl;
 		connector_L.disconnect();
 		connector_R.disconnect();
+			
 	}
+	
 }
 
